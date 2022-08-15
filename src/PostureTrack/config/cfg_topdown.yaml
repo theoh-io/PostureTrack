@@ -1,0 +1,11 @@
+settings:
+  tracker_type: "Stark"
+  detector_model: "default"
+  tracking_conf: 0.8
+  verbose: True
+
+  file: "skating"
+  source: "../../${settings.file}.mp4"
+  gt: 
+  output_vid: "outputs/top_down_${settings.file}.avi"
+  output_json: "outputs/top_down_${settings.file}.json"

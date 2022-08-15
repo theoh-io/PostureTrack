@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+src/PostureTrack/outputs/*
+*.whl 
+*.pt 
+*.pth 
+*.mp4
