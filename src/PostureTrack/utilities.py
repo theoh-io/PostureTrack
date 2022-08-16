@@ -182,11 +182,16 @@ class Utils():
             raise ImportError(class_str)
 
     @staticmethod 
-    def visualization(img, bbox: list, color=(0,0,255), thickness=2):
-        if bbox is not None:
-            start=(int(bbox[0]-bbox[2]/2), int(bbox[1]+bbox[3]/2)) #top-left corner
-            stop= (int(bbox[0]+bbox[2]/2), int(bbox[1]-bbox[3]/2)) #bottom right corner
-            cv2.rectangle(img, start, stop, color, thickness)
+    def visualization(img, bbox_list: list, color=(0,0,255), thickness=2):
+        if bbox_list is not None:
+            if not isinstance(bbox_list[0], list):
+                #handle the case of only 1 detection
+                bbox_list=[bbox_list]
+            for bbox in bbox_list:  
+                print(bbox)
+                start=(int(bbox[0]-bbox[2]/2), int(bbox[1]+bbox[3]/2)) #top-left corner
+                stop= (int(bbox[0]+bbox[2]/2), int(bbox[1]-bbox[3]/2)) #bottom right corner
+                cv2.rectangle(img, start, stop, color, thickness)
         cv2.imshow('Camera Loomo',img)
         cv2.waitKey(1)
 
@@ -261,31 +266,6 @@ def img_seq2vid(path_source, fps=15, verbose=False):
         seq_vid.release()
     return path_vid
 
-
-def img_seq2vid(path_source, fps=30, verbose=True):
-    #global  path_seq, path_source, seq_vid_fps, path_vid
-    path_seq=path_source + '/img'
-    sequences = os.listdir(path_seq)
-    sequences=sorted(sequences)
-    #if the video from the sequence of images doesn't exist => create it
-    path_vid=os.path.join(path_source, "video.avi")
-    exists=os.path.exists(path_vid)
-    if exists is False:
-        if verbose is True: print(f"creating video from img sequence of size{len(sequences)}")
-        if verbose is True: print("first img name", sequences[0])
-        if verbose is True: print("init image", os.path.join(path_seq, sequences[0]))
-        init_img=cv2.imread(os.path.join(path_seq, sequences[0]))
-        height, width, layers =init_img.shape
-        size=(width, height)
-        if verbose is True: print("Dimension of the input seq:", size)
-        seq_vid=cv2.VideoWriter(path_vid, cv2.VideoWriter_fourcc(*'MJPG'), fps , size)
-        for sequence in sequences:
-            if verbose is True: print(f"Running on img sequence {sequence}/{len(sequences)}")
-            sequence_dir = os.path.join(path_seq, sequence)
-            cvimg=cv2.imread(sequence_dir)
-            seq_vid.write(cvimg)
-        seq_vid.release()
-    return path_vid
 
 
 class FrameGrab:

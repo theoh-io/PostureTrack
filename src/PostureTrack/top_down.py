@@ -13,9 +13,8 @@ import os
 import sys
 import cv2
 import numpy as np
-from perceptors import sot_perceptor
-from detectors import yolov7_detector
-from trackers import mmtracking_sot
+from perceptors import sot_perceptor, mot_perceptor
+from trackers import mmtracking_sot, mmtracking_mot
 import hydra
 from omegaconf import DictConfig, OmegaConf
 
@@ -49,18 +48,27 @@ if __name__ == "__main__":
     ###################################
 
     # Initialize Detector Configuration 
-    if tracker_type == "Yolo":
+    if tracker_type == "Yolov7":
+        from detectors import yolov7_detector
         perceptor = sot_perceptor.SotPerceptor(width = 640, height = 480, channels = 3, downscale = 1,
                                                 detector = yolov7_detector.Yolov7Detector, detector_size=detector_model, 
                                                 tracker=None, tracker_model=None, tracking_conf=None,
                                                 type_input = "opencv", verbose=verbose)
     elif tracker_type =="Stark":
+        from detectors import yolov7_detector
         perceptor = sot_perceptor.SotPerceptor(width = 640, height = 480, channels = 3, downscale = 1,
                                                 detector = yolov7_detector.Yolov7Detector, detector_size=detector_model, 
                                                 tracker=mmtracking_sot.SotaTracker, tracker_model="Stark", tracking_conf=tracking_conf,
                                                 type_input = "opencv", verbose=verbose)
+    elif tracker_type =="ByteTrack":
+        from detectors import yolov5_detector
+        perceptor = mot_perceptor.MotPerceptor(width = 640, height = 480, channels = 3, downscale = 1,
+                                                detector = yolov5_detector.Yolov5Detector, detector_size=detector_model, 
+                                                tracker=mmtracking_mot.MotTracker, tracker_model="ByteTrack", tracking_conf=tracking_conf,
+                                                type_input = "opencv", verbose=verbose)
+    
     else:
-        print(f"tracker type {tracker_type} is not implemented !!!!!!!!!")
+        print(f"tracker type {tracker_type} is not implemented.")
 
 
     ##################################
@@ -95,25 +103,24 @@ if __name__ == "__main__":
             break
         tic = time.perf_counter()
         # INFERENCE
-        bbox = perceptor.forward(img)
+        bbox_list = perceptor.forward(img)
         toc = time.perf_counter()
         if verbose:
             print(f"Elapsed time for whole fordward pass: {(toc-tic)*1e3:.1f}ms")
         #record bbox and elapsed time
-        bboxes_to_save.append(bbox)
+        bboxes_to_save.append(bbox_list)
         elapsed_time_list.append((toc-tic)*1e3)
 
         # VISUALIZATION
-        if bbox is not None:
-            print(bbox)
-            Utils.visualization(img, bbox, (255, 0, 0), 2)
+
+        Utils.visualization(img, bbox_list, (255, 0, 0), 2)
         if gt is not None:
             truth=df_gt[frame_number]
             truth=Utils.bbox_x1y1wh_to_xcentycentwh(truth)
             Utils.visualization(img, truth, (0, 255, 0), 1)
 
         if verbose:
-            print("bbox:", bbox)
+            print("bbox:", bbox_list)
 
         if path_output_vid is not None:
             output_vid.write(img)

@@ -27,10 +27,12 @@ class SotPerceptor(BasePerceptor):
         return image
 
     def forward(self, img):
-        image=self.preproc(img)
+        #image=self.preproc(img)
         # Detection
+        image=img
         tic1 = time.perf_counter()
         bbox_list = self.detector.predict(image)
+        print(f"bbox yolo {bbox_list}")
         toc1 = time.perf_counter()
         if self.verbose:
             print(f"Elapsed time for detector forward pass: {(toc1 - tic1) * 1e3:.1f}ms")
@@ -50,6 +52,7 @@ class SotPerceptor(BasePerceptor):
         tic2 = time.perf_counter()
         if bbox_list is not None and self.tracker:
             bbox = self.tracker.forward(cut_imgs,bbox_list,image)
+            print(f"bbox tracker{bbox}")
             toc2 = time.perf_counter()
             if self.verbose:
                 print(f"Elapsed time for tracker forward pass: {(toc2 - tic2) * 1e3:.1f}ms")

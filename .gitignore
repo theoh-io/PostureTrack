@@ -133,3 +133,5 @@ src/PostureTrack/outputs/*
 *.pt 
 *.pth 
 *.mp4
+BlurBody/*
+Basketball/*

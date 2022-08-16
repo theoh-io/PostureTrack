@@ -1,13 +1,14 @@
-from detectors.yolov7_detector import Yolov7Detector
+#from detectors.yolov7_detector import Yolov7Detector
+from detectors.yolov5_detector import Yolov5Detector
 #from trackers.mmtracking_sot import SotaTracker
 
 
 class BasePerceptor():
 
     def __init__(self, width=640, height=480, channels=3, downscale=1, 
-                    detector=Yolov7Detector, detector_size="default",
+                    detector=Yolov5Detector, detector_size="default",
                     tracker=None, tracker_model=None, tracking_conf=0.5,
-                    type_input="opencv", verbose="False"):
+                    type_input="opencv", verbose=True):
         # perceptor expected input image dimensions
         self.width = int(width/downscale)
         self.height = int(height/downscale)
