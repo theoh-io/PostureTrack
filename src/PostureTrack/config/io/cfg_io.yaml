@@ -1,0 +1,7 @@
+
+file: "Basketball"
+source: "../../Basketball/video.avi"
+gt: 
+path_output_vid: "outputs/top_down_Bball.avi"
+path_output_json: "outputs/top_down_Bball.json"
+verbose: True

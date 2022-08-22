@@ -1,0 +1,3 @@
+detector_type: yolov7
+model_size: medium
+bbox_thresh: 0.1

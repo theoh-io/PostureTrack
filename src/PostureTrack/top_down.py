@@ -20,28 +20,37 @@ from omegaconf import DictConfig, OmegaConf
 
 global tracker_type, detector_model, tracking_conf, verbose, source, gt, path_output_vid, output_json
 
-@hydra.main(version_base=None, config_path="config", config_name="cfg_topdown")
-def hydra_topdown(cfg: DictConfig) -> None:
-    global tracker_type, detector_model, tracking_conf, verbose, source, gt, path_output_vid, output_json
-    #print(OmegaConf.to_yaml(cfg))
-    tracker_type=cfg.settings.tracker_type
-    detector_model=cfg.settings.detector_model
-    tracking_conf=cfg.settings.tracking_conf
-    verbose=cfg.settings.verbose
+# @hydra.main(version_base=None, config_path="config", config_name="cfg_topdown")
+# def hydra_topdown(cfg: DictConfig) -> None:
+#     global tracker_type, detector_model, tracking_conf, verbose, source, gt, path_output_vid, output_json
+#     #print(OmegaConf.to_yaml(cfg))
+#     tracker_type=cfg.settings.tracker_type
+#     detector_model=cfg.settings.detector_model
+#     tracking_conf=cfg.settings.tracking_conf
+#     verbose=cfg.settings.verbose
 
-    source=cfg.settings.source
-    gt=cfg.settings.gt
-    path_output_vid=cfg.settings.output_vid
-    output_json=cfg.settings.output_json
+#     source=cfg.settings.source
+#     gt=cfg.settings.gt
+#     #path_output_vid=cfg.settings.output_vid
+#     #output_json=cfg.settings.output_json
 
 
 #def main():
-if __name__ == "__main__":
+#if __name__ == "__main__":
+def TopDown(detector_cfg, tracker_cfg, verbose,
+                    source, gt, path_output_vid, path_output_json):
 
     ###################################
     # Load ConfigFile Arguments
     ####################################
-    hydra_topdown()
+    #hydra_topdown()
+    detector_type=detector_cfg["type"]
+    detector_model=detector_cfg["size"]
+    detector_thresh=detector_cfg["thresh"]
+    tracker_type= tracker_cfg["type"]
+    tracking_conf= tracker_cfg["conf"]
+    path_cfg= tracker_cfg["cfg"]
+    path_weights= tracker_cfg["weights"]
     print(f"tracker_type {tracker_type}")
     ###################################
     # Initialize Full detector

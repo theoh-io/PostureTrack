@@ -156,10 +156,25 @@ def hydra_pifpaf(cfg: DictConfig) -> None:
 
 
 
-def main():
+def PifPaf(checkpoint, decoder, long_edge, show_result, disable_cuda,
+                    source, path_output_vid, path_output_json):
     global args
     args = cli()
-    hydra_pifpaf()
+    #hydra_pifpaf()
+    #adding to ags arguments from cfg
+    args.checkpoint=checkpoint
+    args.decoder=decoder  
+    args.long_edge=long_edge
+    args.show=show_result
+    args.source = source
+    args.video_output=path_output_vid
+    args.json_output=path_output_json
+    disable_cuda=disable_cuda
+    device = torch.device('cpu')
+    if not disable_cuda and torch.cuda.is_available():
+        device = torch.device('cuda')
+    args.device=device
+
     args=cli2(args)
     print(args.decoder)
 

@@ -1,0 +1,5 @@
+checkpoint: "tshufflenetv2k30"
+decoder: ["trackingpose:0"]
+long_edge: 321
+show_result: True
+disable_cuda: False

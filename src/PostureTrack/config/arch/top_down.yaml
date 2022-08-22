@@ -1,0 +1,4 @@
+arch_type: topdown
+tracking_activated: True
+tracker_type: SOT
+pose_activated: False
