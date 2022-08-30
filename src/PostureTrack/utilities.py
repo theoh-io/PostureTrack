@@ -188,7 +188,6 @@ class Utils():
                 #handle the case of only 1 detection
                 bbox_list=[bbox_list]
             for bbox in bbox_list:  
-                print(bbox)
                 start=(int(bbox[0]-bbox[2]/2), int(bbox[1]+bbox[3]/2)) #top-left corner
                 stop= (int(bbox[0]+bbox[2]/2), int(bbox[1]-bbox[3]/2)) #bottom right corner
                 cv2.rectangle(img, start, stop, color, thickness)

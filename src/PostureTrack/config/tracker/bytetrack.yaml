@@ -1,0 +1,5 @@
+tracker_name: ByteTrack
+tracker_type: MOT
+tracking_conf: 0.8
+path_cfg: "../../libs/mmtracking/configs/mot/bytetrack/bytetrack_yolox_x_crowdhuman_mot17-private.py"
+path_weights: "trackers/weights/bytetrack_yolox_x_crowdhuman_mot17-private-half_20211218_205500-1985c9f0.pth"

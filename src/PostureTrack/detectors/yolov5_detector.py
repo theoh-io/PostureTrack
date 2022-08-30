@@ -2,15 +2,23 @@ import torch
 import numpy as np
 import time
 import sys
+import os
 
 
 class Yolov5Detector():
     def __init__(self, model='default', verbose = False):
-        print(sys.path)
-        yolo_version="yolov5s"
-        if model=='default':
-            self.model = torch.hub.load('ultralytics/yolov5', yolo_version)
-            print(f"-> Using {yolo_version} for multi bbox detection.")
+        if model=='small' or model=='s':
+            yolo_version="yolov5s"
+        if model=='default' or model=='medium' or model=='m':
+            yolo_version="yolov5m"
+        if model=='large' or model=='l':
+            yolo_version="yolov5l"
+        if model=='xlarge' or model=='xl':
+            yolo_version="yolov5xl"
+        os.chdir("detectors/weights")
+        self.model = torch.hub.load('ultralytics/yolov5', yolo_version)
+        os.chdir("../..")
+        print(f"-> Using {yolo_version} for multi bbox detection.")
         self.model.classes=0 #running only person detection
         self.detection=np.array([0, 0, 0, 0]) 
         self.verbose=verbose
@@ -89,10 +97,10 @@ class Yolov5Detector():
 
     def predict(self, image, thresh=0.01):
         # Inference
-        tic = time.perf_counter()
+        #tic = time.perf_counter()
         results = self.model(image) #might need to specify the size
-        toc = time.perf_counter()
-        if self.verbose is True: print(f"Elapsed time for yolov5 inference: {(toc-tic)*1e3:.1f}ms")
+        # toc = time.perf_counter()
+        # if self.verbose is True: print(f"Elapsed time for yolov5 inference: {(toc-tic)*1e3:.1f}ms")
         detect_pandas=results.pandas().xyxy  #results.xyxy: [xmin, ymin, xmax, ymax, conf, class]
         self.detection=np.array(detect_pandas)
         if self.verbose is True: print("shape of the detection: ", self.detection.shape)
@@ -102,6 +110,6 @@ class Yolov5Detector():
             self.detection=np.squeeze(self.detection,axis=0)   #use np.squeeze to remove 0 dim from the tensor
             #if self.verbose is True: print("bbox before format: ", self.detection)
             bbox=self.bbox_format() #modify the format of detection for [xcenter, ycenter, width, height]
-            if self.verbose is True: print("bbox after format: ", bbox)
+            #if self.verbose is True: print("bbox after format: ", bbox)
             return bbox
         return None

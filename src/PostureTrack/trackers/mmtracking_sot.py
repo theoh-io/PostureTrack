@@ -3,40 +3,13 @@ import numpy as np
 from mmtrack.apis import inference_sot, init_model
 import os
 from utilities import Utils
+from trackers.base_mmtracking import BaseTracker
 
 
-class SotaTracker():
-    def __init__(self, tracker_name="Stark", tracking_conf="0.5", device='gpu', verbose="False"):
+class SotaTracker(BaseTracker):
+
+    def forward(self, detections: list, img: np.ndarray) -> list:
         '''
-        init_model parameters: 
-        tracker_name (Stark/Siamese) 
-        desired device to specify cpu if wanted
-        '''
-        #FIX: download weights and set the path to chckpt and cfg
-        desired_device = device
-        if tracker_name=="Stark" or tracker_name=="stark":
-            #print(os.getcwd())
-            path_config=os.path.abspath(os.path.join(os.getcwd(),"../../libs/mmtracking/configs/sot/stark/stark_st2_r50_50e_lasot.py"))#"configs/stark_st2_r50_50e_lasot.py"
-            path_model=os.path.abspath(os.path.join(os.getcwd(),"trackers/weights/stark_st2_r50_50e_lasot_20220416_170201-b1484149.pth"))#"weights/stark_st2_r50_50e_lasot_20220416_170201-b1484149.pth"
-        elif tracker_name=="Siamese" or tracker_name=="siamese" or tracker_name=="siam" or tracker_name=="Siam":
-            print("Siamese is still not implemented")
-
-
-        cpu = 'cpu' == desired_device
-        cuda = not cpu and torch.cuda.is_available()
-        self.device = torch.device('cuda:0' if cuda else 'cpu')
-        self.tracker = init_model(path_config, path_model, self.device) 
-        #prog_bar = mmcv.ProgressBar(len(imgs))
-        self.conf_thresh=tracking_conf
-        self.frame=0
-        self.verbose=verbose
-        if self.verbose:
-            print(f"-> Using tracker {tracker_name} from MMTracking")
-
-
-    def forward(self, cut_imgs: list, detections: list, img: np.ndarray) -> list:
-        '''
-        cut_imgs: img parts cut from img at bbox positions
         detections: bboxes from YOLO detector
         img: original image
         -> bbox

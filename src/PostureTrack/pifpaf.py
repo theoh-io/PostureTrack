@@ -122,36 +122,37 @@ def cli2(args):
     #     args.source = int(args.source)
 
     #standard filenames
-    if args.video_output is True:
-        args.video_output = '{}.openpifpaf.mp4'.format(args.source)
-        if os.path.exists(args.video_output):
-            os.remove(args.video_output)
+    # if args.video_output is True:
+    #     args.video_output = '{}.openpifpaf.mp4'.format(args.source)
+    #     if os.path.exists(args.video_output):
+    #         os.remove(args.video_output)
+    print(args.video_output)
     assert args.video_output is None or not os.path.exists(args.video_output)
-    if args.json_output is True:
-        args.json_output = '{}.openpifpaf.json'.format(args.source)
-        if os.path.exists(args.json_output):
-            os.remove(args.json_output)
+    # if args.json_output is True:
+    #     args.json_output = '{}.openpifpaf.json'.format(args.source)
+    #     if os.path.exists(args.json_output):
+    #         os.remove(args.json_output)
     assert args.json_output is None or not os.path.exists(args.json_output)
 
     return args
 
 
-@hydra.main(version_base=None, config_path="config", config_name="cfg_pifpaf")
-def hydra_pifpaf(cfg: DictConfig) -> None:
-    global args
-    #print(OmegaConf.to_yaml(cfg))
-    args.checkpoint=cfg.settings.checkpoint
-    args.decoder=cfg.settings.decoder  
-    args.long_edge=cfg.settings.long_edge
-    args.show=cfg.settings.show
-    args.source = cfg.settings.source
-    args.video_output=cfg.settings.video_output
-    args.json_output=cfg.settings.json_output
-    disable_cuda=cfg.settings.disable_cuda
-    device = torch.device('cpu')
-    if not disable_cuda and torch.cuda.is_available():
-        device = torch.device('cuda')
-    args.device=device
+# @hydra.main(version_base=None, config_path="config", config_name="cfg_pifpaf")
+# def hydra_pifpaf(cfg: DictConfig) -> None:
+#     global args
+#     #print(OmegaConf.to_yaml(cfg))
+#     args.checkpoint=cfg.settings.checkpoint
+#     args.decoder=cfg.settings.decoder  
+#     args.long_edge=cfg.settings.long_edge
+#     args.show=cfg.settings.show
+#     args.source = cfg.settings.source
+#     args.video_output=cfg.settings.video_output
+#     args.json_output=cfg.settings.json_output
+#     disable_cuda=cfg.settings.disable_cuda
+#     device = torch.device('cpu')
+#     if not disable_cuda and torch.cuda.is_available():
+#         device = torch.device('cuda')
+#     args.device=device
 
 
 

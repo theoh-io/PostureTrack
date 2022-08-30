@@ -2,8 +2,8 @@ defaults:
   - io: cfg_io
 
   - arch: top_down
-  - detector: yolov5
-  - tracker: stark
+  - detector: yolov7
+  - tracker: bytetrack
 
   # - arch: bottom_up
   # - tracker: pifpaf_tracker

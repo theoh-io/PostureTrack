@@ -45,39 +45,70 @@ def TopDown(detector_cfg, tracker_cfg, verbose,
     ####################################
     #hydra_topdown()
     detector_type=detector_cfg["type"]
-    detector_model=detector_cfg["size"]
+    detector_size=detector_cfg["size"]
     detector_thresh=detector_cfg["thresh"]
+    tracker_name=tracker_cfg["name"]
     tracker_type= tracker_cfg["type"]
     tracking_conf= tracker_cfg["conf"]
-    path_cfg= tracker_cfg["cfg"]
-    path_weights= tracker_cfg["weights"]
+    path_cfg_tracker= tracker_cfg["cfg"]
+    path_weights_tracker= tracker_cfg["weights"]
     print(f"tracker_type {tracker_type}")
     ###################################
     # Initialize Full detector
     ###################################
 
     # Initialize Detector Configuration 
-    if tracker_type == "Yolov7":
-        from detectors import yolov7_detector
-        perceptor = sot_perceptor.SotPerceptor(width = 640, height = 480, channels = 3, downscale = 1,
-                                                detector = yolov7_detector.Yolov7Detector, detector_size=detector_model, 
-                                                tracker=None, tracker_model=None, tracking_conf=None,
-                                                type_input = "opencv", verbose=verbose)
-    elif tracker_type =="Stark":
-        from detectors import yolov7_detector
-        perceptor = sot_perceptor.SotPerceptor(width = 640, height = 480, channels = 3, downscale = 1,
-                                                detector = yolov7_detector.Yolov7Detector, detector_size=detector_model, 
-                                                tracker=mmtracking_sot.SotaTracker, tracker_model="Stark", tracking_conf=tracking_conf,
-                                                type_input = "opencv", verbose=verbose)
-    elif tracker_type =="ByteTrack":
-        from detectors import yolov5_detector
-        perceptor = mot_perceptor.MotPerceptor(width = 640, height = 480, channels = 3, downscale = 1,
-                                                detector = yolov5_detector.Yolov5Detector, detector_size=detector_model, 
-                                                tracker=mmtracking_mot.MotTracker, tracker_model="ByteTrack", tracking_conf=tracking_conf,
-                                                type_input = "opencv", verbose=verbose)
     
-    else:
-        print(f"tracker type {tracker_type} is not implemented.")
+    #Problem when loading both detector at the same time
+    if detector_type=="yolov5":
+        from detectors import yolov5_detector
+        detector_object=yolov5_detector.Yolov5Detector
+    elif detector_type=="yolov7":
+        from detectors import yolov7_detector
+        detector_object=yolov7_detector.Yolov7Detector
+
+    #Tracker object MOT/SOT
+    if tracker_type=="SOT":
+        tracker_object=mmtracking_sot.SotaTracker
+        perceptor_object=sot_perceptor.SotPerceptor
+    elif tracker_type=="MOT":
+        tracker_object=mmtracking_mot.MotTracker
+        perceptor_object=mot_perceptor.MotPerceptor
+
+    
+    # perceptor=sot_perceptor.SotPerceptor(width = 640, height = 480, channels = 3, downscale = 1,
+    #                                     detector = detector_object, detector_size=detector_size, 
+    #                                     tracker=tracker_object, tracker_model=tracker_name, tracking_conf=tracking_conf,
+    #                                     path_cfg_tracker=path_cfg_tracker, path_weights_tracker=path_weights_tracker,
+    #                                     type_input = "opencv", verbose=verbose)
+    perceptor=perceptor_object(width = 640, height = 480, channels = 3, downscale = 1,
+                                detector = detector_object, detector_size=detector_size, 
+                                tracker=tracker_object, tracker_model=tracker_name, tracking_conf=tracking_conf,
+                                path_cfg_tracker=path_cfg_tracker, path_weights_tracker=path_weights_tracker,
+                                type_input = "opencv", verbose=verbose)
+
+
+    # if tracker_type == "Yolov7":
+    #     from detectors import yolov7_detector
+    #     perceptor = sot_perceptor.SotPerceptor(width = 640, height = 480, channels = 3, downscale = 1,
+    #                                             detector = yolov7_detector.Yolov7Detector, detector_size=detector_model, 
+    #                                             tracker=None, tracker_model=None, tracking_conf=None,
+    #                                             type_input = "opencv", verbose=verbose)
+    # elif tracker_type =="Stark":
+    #     from detectors import yolov7_detector
+    #     perceptor = sot_perceptor.SotPerceptor(width = 640, height = 480, channels = 3, downscale = 1,
+    #                                             detector = yolov7_detector.Yolov7Detector, detector_size=detector_model, 
+    #                                             tracker=mmtracking_sot.SotaTracker, tracker_model="Stark", tracking_conf=tracking_conf,
+    #                                             type_input = "opencv", verbose=verbose)
+    # elif tracker_type =="ByteTrack":
+    #     from detectors import yolov5_detector
+    #     perceptor = mot_perceptor.MotPerceptor(width = 640, height = 480, channels = 3, downscale = 1,
+    #                                             detector = yolov5_detector.Yolov5Detector, detector_size=detector_model, 
+    #                                             tracker=mmtracking_mot.MotTracker, tracker_model="ByteTrack", tracking_conf=tracking_conf,
+    #                                             type_input = "opencv", verbose=verbose)
+    
+    # else:
+    #     print(f"tracker type {tracker_type} is not implemented.")
 
 
     ##################################
@@ -129,7 +160,7 @@ def TopDown(detector_cfg, tracker_cfg, verbose,
             Utils.visualization(img, truth, (0, 255, 0), 1)
 
         if verbose:
-            print("bbox:", bbox_list)
+            print("final bbox:", bbox_list)
 
         if path_output_vid is not None:
             output_vid.write(img)

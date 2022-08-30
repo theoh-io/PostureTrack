@@ -29,7 +29,16 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized,
 
 class Yolov7Detector():
     def __init__(self, cfg, model='default', verbose = False):
-        self.weights = "detectors/yolov7.pt"
+        if model=='small' or model=='s':
+            yolo_version="yolov7-tiny"
+        if model=='default' or model=='medium' or model=='m':
+            yolo_version="yolov7"
+        if model=='large' or model=='l':
+            print("No weights for yolov7 M loading same weights as medium")
+            yolo_version="yolov7"
+        if model=='xlarge' or model=='xl':
+            yolo_version="yolov7x"
+        self.weights = "detectors/weights/"+yolo_version+".pt"
         self.classes=0
         self.detection=np.array([0, 0, 0, 0])
         self.verbose=verbose
