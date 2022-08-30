@@ -1,4 +1,4 @@
 ip: 128.179.153.185
-downscale: 2
+downscale: 4
 verbose: true
 path_video: "outputs/loomo.avi"
