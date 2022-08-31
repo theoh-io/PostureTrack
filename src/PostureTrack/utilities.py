@@ -137,8 +137,8 @@ class Utils():
         #convert from (x1,y1,x2,y2) to (xcenter,y_center, width, height)
         offset_x=int((bbox[2]-bbox[0])/2)
         offset_y=int((bbox[3]-bbox[1])/2)
-        bbox[0]=bbox[0]+offset_x
-        bbox[1]=bbox[1]+offset_y
+        bbox[0]=int(bbox[0]+offset_x)
+        bbox[1]=int(bbox[1]+offset_y)
         bbox[2]=offset_x*2
         bbox[3]=offset_y*2
         return bbox

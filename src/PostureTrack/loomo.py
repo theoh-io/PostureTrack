@@ -22,14 +22,9 @@ def get_config(cfg: DictConfig):
     ip=cfg.loomo.ip
     downscale=cfg.loomo.downscale
     path_output_vid=cfg.loomo.path_video
-    verbose=cfg.loomo.verbose
+    verbose=cfg.io.verbose_level
     loomo_cfg={'ip':ip, 'downscale': downscale, 'path_output_vid': path_output_vid, 'verbose': verbose}
     if cfg.arch.arch_type=="topdown":
-        print("top-down architecture")
-        if cfg.tracker.tracker_type=="SOT":
-            print("using SOT Tracker")           
-        elif cfg.tracker.tracker_type=="MOT":
-            print("using MOT Tracker")
         detector_name=cfg.detector.detector_name
         detector_size=cfg.detector.detector_size
         detector_thresh=cfg.detector.bbox_thresh
@@ -75,7 +70,6 @@ def Loomo(loomo_cfg, detector_cfg, tracker_cfg):
     tracking_conf= tracker_cfg["conf"]
     path_cfg_tracker= tracker_cfg["cfg"]
     path_weights_tracker= tracker_cfg["weights"]
-    print(f"tracker_type {tracker_type}")
 
     ####################################
     # Initialize Full detector
@@ -99,7 +93,7 @@ def Loomo(loomo_cfg, detector_cfg, tracker_cfg):
         perceptor_object=mot_perceptor.MotPerceptor
 
     perceptor=perceptor_object(width = 640, height = 480, channels = 3, downscale = downscale,
-                            detector = detector_object, detector_size=detector_size, 
+                            detector = detector_object, detector_size=detector_size, detector_thresh=detector_thresh,
                             tracker=tracker_object, tracker_model=tracker_name, tracking_conf=tracking_conf,
                             path_cfg_tracker=path_cfg_tracker, path_weights_tracker=path_weights_tracker,
                             type_input = "opencv", verbose=verbose)
@@ -124,7 +118,8 @@ def Loomo(loomo_cfg, detector_cfg, tracker_cfg):
         sys.exit()
 
     # Connect to remote server
-    print('# Connecting to server, ' + host + ' (' + remote_ip + ')')
+    if verbose:
+        print('# Connecting to server, ' + host + ' (' + remote_ip + ')')
     s.connect((remote_ip , port))
 
     if path_output_vid:
@@ -132,13 +127,15 @@ def Loomo(loomo_cfg, detector_cfg, tracker_cfg):
         width  = perceptor.width
         height = perceptor.height
         fps = 3.5
-        print(f"width: {width}, height: {height}, fps: {fps}")
+        if verbose:
+            print(f"width: {width}, height: {height}, fps: {fps}")
         output_vid = cv2.VideoWriter(path_output_vid, cv2.VideoWriter_fourcc(*'MJPG'), fps, (width, height))
 
     #Image Receiver 
     net_recvd_length = 0
     recvd_image = b''
-    print("cuda : ", torch.cuda.is_available())
+    if verbose:
+        print("cuda : ", torch.cuda.is_available())
     while True:
         # Receive data
         reply = s.recv(perceptor.data_size)

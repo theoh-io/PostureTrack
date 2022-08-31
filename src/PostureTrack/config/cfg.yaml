@@ -1,7 +1,7 @@
 defaults:
   - io: cfg_io
   - arch: top_down
-  - detector: yolov7
+  - detector: yolov5
   - tracker: stark
   - loomo: loomo_cfg
 

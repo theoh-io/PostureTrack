@@ -11,6 +11,7 @@ from numpy import random
 from pathlib import Path
 import sys
 import os
+from utilities import Utils
 
 #CWD is Perception-Pipeline/python
 path_yolov7=os.path.join((Path(os.getcwd()).parents[1]), "libs/yolov7") #PostureTrack/libs/yolov7
@@ -25,7 +26,7 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized,
 
 
 class Yolov7Detector():
-    def __init__(self, cfg, model='default', verbose = 0):
+    def __init__(self, model='default', thresh_bbox=0.1, verbose = 0):
         if model=='small' or model=='s':
             yolo_version="yolov7-tiny"
         if model=='default' or model=='medium' or model=='m':
@@ -37,9 +38,10 @@ class Yolov7Detector():
             yolo_version="yolov7x"
         self.weights = "detectors/weights/"+yolo_version+".pt"
         self.classes=0
+        self.thresh_bbox=thresh_bbox
         self.detection=np.array([0, 0, 0, 0])
         self.verbose=verbose
-        if verbose:
+        if self.verbose:
             print(f"Created YOLOv7 ({model}) detector with verbose={verbose}.")
 
         # Load model
@@ -98,7 +100,7 @@ class Yolov7Detector():
 
             
 
-    def predict(self, image, thresh=0.1):          
+    def predict(self, image):          
         if self.init and self.device.type != 'cpu':
             self.model(torch.zeros(1, 3, self.imgsz, self.imgsz).to(self.device).type_as(next(self.model.parameters())))  # run once
             self.init=False
@@ -126,7 +128,7 @@ class Yolov7Detector():
 
             pred = self.model(img)[0]
             # Apply NMS
-            pred = non_max_suppression(pred, thresh, iou_thresh, classes=0)#self.classes)
+            pred = non_max_suppression(pred, self.thresh_bbox, iou_thresh, classes=0)#self.classes)
            
             toc = time.perf_counter()
             if self.verbose >= 3:
@@ -142,12 +144,17 @@ class Yolov7Detector():
                     #print(det)
                     det[:, :4] = scale_coords(img.shape[2:], det[:, :4], image.shape).round()
                     self.detection=det[:,:4].cpu().detach().numpy()
-                    self.detection=self.bbox_format()
+                    bbox_list=[]
+                    for bbox in self.detection:
+                        new_bbox=Utils.bbox_x1y1x2y2_to_xcentycentwh(bbox)
+                        bbox_list.append(new_bbox)
+                    self.detection=np.array(bbox_list)
+                    #self.detection=self.bbox_format()
                     if self.verbose >=3: 
                         print("yolov7 detection bboxes: ", self.detection)
                     return self.detection
                 else:
-                    if verbose:
+                    if self.verbose:
                         print("Yolov7 No Detections !")
                     return None
 

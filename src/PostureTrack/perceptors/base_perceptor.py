@@ -6,7 +6,7 @@ from detectors.yolov5_detector import Yolov5Detector
 class BasePerceptor():
 
     def __init__(self, width=640, height=480, channels=3, downscale=1, 
-                    detector=Yolov5Detector, detector_size="default",
+                    detector=Yolov5Detector, detector_size="default", detector_thresh=0.1,
                     tracker=None, tracker_model=None, tracking_conf=0.5,
                     path_cfg_tracker="", path_weights_tracker="",
                     type_input="opencv", verbose=1):
@@ -19,7 +19,7 @@ class BasePerceptor():
         # Image received size data.
         self.data_size = int(self.width * self.height * channels)
 
-        self.detector=detector(detector_size, verbose=self.verbose)
+        self.detector=detector(model=detector_size, thresh_bbox=detector_thresh, verbose=self.verbose)
         if tracker:
             self.tracker=tracker(tracker_model, tracking_conf, path_cfg_tracker, path_weights_tracker, verbose=self.verbose)
         else:

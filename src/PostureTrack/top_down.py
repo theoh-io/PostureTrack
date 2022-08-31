@@ -58,7 +58,7 @@ def TopDown(detector_cfg, tracker_cfg, verbose,
         perceptor_object=mot_perceptor.MotPerceptor
 
     perceptor=perceptor_object(width = 640, height = 480, channels = 3, downscale = 1,
-                                detector = detector_object, detector_size=detector_size, 
+                                detector = detector_object, detector_size=detector_size, detector_thresh=detector_thresh, 
                                 tracker=tracker_object, tracker_model=tracker_name, tracking_conf=tracking_conf,
                                 path_cfg_tracker=path_cfg_tracker, path_weights_tracker=path_weights_tracker,
                                 type_input = "opencv", verbose=verbose)
