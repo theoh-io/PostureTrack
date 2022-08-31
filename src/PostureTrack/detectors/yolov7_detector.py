@@ -13,11 +13,8 @@ import sys
 import os
 
 #CWD is Perception-Pipeline/python
-#print(f"cwd is :{os.getcwd()}")
-path_yolov7=os.path.join((Path(os.getcwd()).parents[1]), "libs/yolov7")
-print(path_yolov7)
+path_yolov7=os.path.join((Path(os.getcwd()).parents[1]), "libs/yolov7") #PostureTrack/libs/yolov7
 sys.path.append(path_yolov7)
-#print(sys.path)
 
 from models.experimental import attempt_load
 from utils.datasets import LoadStreams, LoadImages
@@ -28,7 +25,7 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized,
 
 
 class Yolov7Detector():
-    def __init__(self, cfg, model='default', verbose = False):
+    def __init__(self, cfg, model='default', verbose = 0):
         if model=='small' or model=='s':
             yolo_version="yolov7-tiny"
         if model=='default' or model=='medium' or model=='m':
@@ -42,7 +39,8 @@ class Yolov7Detector():
         self.classes=0
         self.detection=np.array([0, 0, 0, 0])
         self.verbose=verbose
-        print(f"Created YOLOv7 detector with verbose={verbose}.")
+        if verbose:
+            print(f"Created YOLOv7 ({model}) detector with verbose={verbose}.")
 
         # Load model
         #self.device=1 #'cpu'
@@ -131,21 +129,26 @@ class Yolov7Detector():
             pred = non_max_suppression(pred, thresh, iou_thresh, classes=0)#self.classes)
            
             toc = time.perf_counter()
-            if self.verbose is True: print(f"Elapsed time for yolov7 inference: {(toc-tic)*1e3:.1f}ms")
+            if self.verbose >= 3:
+                print(f"Elapsed time for yolov7 inference (inside): {(toc-tic)*1e3:.1f}ms")
             # Process detections
 
             
             for i, det in enumerate(pred):  # detections per image
-                if self.verbose is True: print("shape of the detection: ", len(det))
+                if self.verbose >=3: 
+                    print("shape of the detection: ", len(det))
                 if len(det):
                     # Rescale boxes from img_size to im0 size
                     #print(det)
                     det[:, :4] = scale_coords(img.shape[2:], det[:, :4], image.shape).round()
                     self.detection=det[:,:4].cpu().detach().numpy()
                     self.detection=self.bbox_format()
-                    if self.verbose is True: print("bbox after format: ", self.detection)
+                    if self.verbose >=3: 
+                        print("yolov7 detection bboxes: ", self.detection)
                     return self.detection
                 else:
+                    if verbose:
+                        print("Yolov7 No Detections !")
                     return None
 
 

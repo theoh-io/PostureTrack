@@ -5,19 +5,15 @@ from pifpaf import PifPaf
 
 @hydra.main(version_base=None, config_path="config", config_name="cfg")
 def get_config(cfg: DictConfig) -> None:
-    print(OmegaConf.to_yaml(cfg))
+    verbose=cfg.io.verbose_level
+    if verbose:
+        print(OmegaConf.to_yaml(cfg))
     #loading IO cfg
     source=cfg.io.source
     gt=cfg.io.gt
     path_output_vid=cfg.io.path_output_vid
     path_output_json=cfg.io.path_output_json
-    verbose=cfg.io.verbose
     if cfg.arch.arch_type=="topdown":
-        print("top-down architecture")
-        if cfg.tracker.tracker_type=="SOT":
-            print("using SOT Tracker")           
-        elif cfg.tracker.tracker_type=="MOT":
-            print("using MOT Tracker")
         detector_name=cfg.detector.detector_name
         detector_size=cfg.detector.detector_size
         detector_thresh=cfg.detector.bbox_thresh
@@ -33,9 +29,7 @@ def get_config(cfg: DictConfig) -> None:
         TopDown(detector_cfg, tracker_cfg, verbose,
                 source, gt, path_output_vid, path_output_json)
     elif cfg.arch.arch_type=="bottomup":
-        print("bottom-up architecture")
         if cfg.arch.tracker=="pifpaf":
-            print("using pifpaf Tracker")
             checkpoint=cfg.tracker.checkpoint
             decoder=cfg.tracker.decoder
             long_edge=cfg.tracker.long_edge

@@ -20,23 +20,6 @@ from omegaconf import DictConfig, OmegaConf
 
 global tracker_type, detector_model, tracking_conf, verbose, source, gt, path_output_vid, output_json
 
-# @hydra.main(version_base=None, config_path="config", config_name="cfg_topdown")
-# def hydra_topdown(cfg: DictConfig) -> None:
-#     global tracker_type, detector_model, tracking_conf, verbose, source, gt, path_output_vid, output_json
-#     #print(OmegaConf.to_yaml(cfg))
-#     tracker_type=cfg.settings.tracker_type
-#     detector_model=cfg.settings.detector_model
-#     tracking_conf=cfg.settings.tracking_conf
-#     verbose=cfg.settings.verbose
-
-#     source=cfg.settings.source
-#     gt=cfg.settings.gt
-#     #path_output_vid=cfg.settings.output_vid
-#     #output_json=cfg.settings.output_json
-
-
-#def main():
-#if __name__ == "__main__":
 def TopDown(detector_cfg, tracker_cfg, verbose,
                     source, gt, path_output_vid, path_output_json):
 
@@ -52,7 +35,6 @@ def TopDown(detector_cfg, tracker_cfg, verbose,
     tracking_conf= tracker_cfg["conf"]
     path_cfg_tracker= tracker_cfg["cfg"]
     path_weights_tracker= tracker_cfg["weights"]
-    print(f"tracker_type {tracker_type}")
     ###################################
     # Initialize Full detector
     ###################################
@@ -75,12 +57,6 @@ def TopDown(detector_cfg, tracker_cfg, verbose,
         tracker_object=mmtracking_mot.MotTracker
         perceptor_object=mot_perceptor.MotPerceptor
 
-    
-    # perceptor=sot_perceptor.SotPerceptor(width = 640, height = 480, channels = 3, downscale = 1,
-    #                                     detector = detector_object, detector_size=detector_size, 
-    #                                     tracker=tracker_object, tracker_model=tracker_name, tracking_conf=tracking_conf,
-    #                                     path_cfg_tracker=path_cfg_tracker, path_weights_tracker=path_weights_tracker,
-    #                                     type_input = "opencv", verbose=verbose)
     perceptor=perceptor_object(width = 640, height = 480, channels = 3, downscale = 1,
                                 detector = detector_object, detector_size=detector_size, 
                                 tracker=tracker_object, tracker_model=tracker_name, tracking_conf=tracking_conf,
@@ -115,9 +91,9 @@ def TopDown(detector_cfg, tracker_cfg, verbose,
     # Load Input Source/Video Writer #
     ##################################
     # start video stream
-
     #df_gt=Utils.load_groundtruth(path_groundtruth)
-    print(f"Using: {source} as input")
+    if verbose:
+        print(f"Using: {source} as input")
     grab = FrameGrab(mode="video", path=source)
 
     if path_output_vid:
@@ -125,7 +101,8 @@ def TopDown(detector_cfg, tracker_cfg, verbose,
         width  = int(grab.cap.get(cv2.CAP_PROP_FRAME_WIDTH))   # float `width`
         height = int(grab.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))  # float `height`
         fps = int(grab.cap.get(cv2.CAP_PROP_FPS))
-        print(f"width: {width}, height: {height}, fps: {fps}")
+        if verbose:
+            print(f"width: {width}, height: {height}, fps: {fps}")
         output_vid = cv2.VideoWriter(path_output_vid, cv2.VideoWriter_fourcc(*'MJPG'), fps, (width, height))
    
     ##############################
@@ -145,7 +122,7 @@ def TopDown(detector_cfg, tracker_cfg, verbose,
         # INFERENCE
         bbox_list = perceptor.forward(img)
         toc = time.perf_counter()
-        if verbose:
+        if verbose >= 2:
             print(f"Elapsed time for whole fordward pass: {(toc-tic)*1e3:.1f}ms")
         #record bbox and elapsed time
         bboxes_to_save.append(bbox_list)

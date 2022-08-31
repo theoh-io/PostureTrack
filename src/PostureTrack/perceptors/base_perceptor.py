@@ -9,7 +9,7 @@ class BasePerceptor():
                     detector=Yolov5Detector, detector_size="default",
                     tracker=None, tracker_model=None, tracking_conf=0.5,
                     path_cfg_tracker="", path_weights_tracker="",
-                    type_input="opencv", verbose=True):
+                    type_input="opencv", verbose=1):
         # perceptor expected input image dimensions
         self.width = int(width/downscale)
         self.height = int(height/downscale)
@@ -21,30 +21,14 @@ class BasePerceptor():
 
         self.detector=detector(detector_size, verbose=self.verbose)
         if tracker:
-            self.tracker=tracker(tracker_model, tracking_conf, path_cfg_tracker, path_weights_tracker)
+            self.tracker=tracker(tracker_model, tracking_conf, path_cfg_tracker, path_weights_tracker, verbose=self.verbose)
         else:
             self.tracker=None
         self.type_input=type_input
 
         if self.verbose:
             print("Initializing Perceptor")
-            #print(f"-> Using {str(self.detector)} for detection and {str(self.tracker)} 
-            #        for tracking")
             print(f"-> Input image of type {self.type_input} and downscale {self.downscale}")
-
-    # def preproc(self,image):
-    #     # Adapt image to detector requirements
-    #     pil_image = Image.frombytes('RGB', (self.width,self.height), image)
-    #     opencvImage = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
-    #     opencvImage = cv2.cvtColor(opencvImage,cv2.COLOR_BGR2RGB)
-
-    #     if self.type_input == "opencv":
-    #         image = opencvImage
-        
-    #     elif self.type_input == "pil":
-    #         image = pil_image
-
-    #     return image
 
 
     def forward(self, image):

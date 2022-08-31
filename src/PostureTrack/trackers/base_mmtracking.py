@@ -4,7 +4,7 @@ import os
 
 
 class BaseTracker():
-    def __init__(self, tracker_name="", tracking_conf=None, path_cfg_tracker="", path_weights_tracker="", device='gpu', verbose="False"):
+    def __init__(self, tracker_name="", tracking_conf=None, path_cfg_tracker="", path_weights_tracker="", device='gpu', verbose=0):
        
         desired_device = device
         path_config=os.path.abspath(os.path.join(os.getcwd(),path_cfg_tracker))

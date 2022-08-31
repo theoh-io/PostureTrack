@@ -6,7 +6,7 @@ import os
 
 
 class Yolov5Detector():
-    def __init__(self, model='default', verbose = False):
+    def __init__(self, model='default', verbose = 0):
         if model=='small' or model=='s':
             yolo_version="yolov5s"
         if model=='default' or model=='medium' or model=='m':
@@ -22,7 +22,8 @@ class Yolov5Detector():
         self.model.classes=0 #running only person detection
         self.detection=np.array([0, 0, 0, 0]) 
         self.verbose=verbose
-        print(f"Created YOLOv5 detector with verbose={verbose}.")
+        if verbose:
+            print(f"Created YOLOv5 ({model}) detector with verbose={verbose}.")
 
     def bbox_format(self):
         #detection format xmin, ymin, xmax,ymax, conf, class, 'person'
@@ -76,7 +77,6 @@ class Yolov5Detector():
         #threshold for confidence detection
         # Inference
         results = self.model(image) #might need to specify the size
-
         #results.xyxy: [xmin, ymin, xmax, ymax, conf, class]
         detect_pandas=results.pandas().xyxy
         self.detection=np.array(detect_pandas)
@@ -97,19 +97,18 @@ class Yolov5Detector():
 
     def predict(self, image, thresh=0.01):
         # Inference
-        #tic = time.perf_counter()
         results = self.model(image) #might need to specify the size
-        # toc = time.perf_counter()
-        # if self.verbose is True: print(f"Elapsed time for yolov5 inference: {(toc-tic)*1e3:.1f}ms")
         detect_pandas=results.pandas().xyxy  #results.xyxy: [xmin, ymin, xmax, ymax, conf, class]
         self.detection=np.array(detect_pandas)
-        if self.verbose is True: print("shape of the detection: ", self.detection.shape)
+        if self.verbose >=3: 
+            print("shape of the detection: ", self.detection.shape)
         if (self.detection.shape[1]!=0):
-            #save resuts
-            #results.save()
             self.detection=np.squeeze(self.detection,axis=0)   #use np.squeeze to remove 0 dim from the tensor
-            #if self.verbose is True: print("bbox before format: ", self.detection)
             bbox=self.bbox_format() #modify the format of detection for [xcenter, ycenter, width, height]
-            #if self.verbose is True: print("bbox after format: ", bbox)
+            if self.verbose >= 3:
+                print(f"Yolov5 Detection bboxes {bbox}")
             return bbox
+        else:
+            if verbose:
+                print("Yolov5 no detections !")
         return None

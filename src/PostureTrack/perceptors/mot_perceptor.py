@@ -20,10 +20,10 @@ class MotPerceptor(BasePerceptor):
         tic2 = time.perf_counter()
         #if bbox_list is not None and self.tracker:
         bbox_list = self.tracker.forward(image)
-        if self.verbose:
+        if self.verbose >=2 :
             print(f"bbox tracker{bbox_list}")
         toc2 = time.perf_counter()
-        if self.verbose:
+        if self.verbose >= 2:
             print(f"Elapsed time for tracker forward pass: {(toc2 - tic2) * 1e3:.1f}ms")
         #elif not self.tracker: 
             #No trackers provided just output the list of all detections

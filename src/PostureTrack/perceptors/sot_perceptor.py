@@ -19,7 +19,7 @@ class SotPerceptor(BasePerceptor):
         tic1 = time.perf_counter()
         bbox_list = self.detector.predict(img)
         toc1 = time.perf_counter()
-        if self.verbose:
+        if self.verbose >= 2:
             print(f"Elapsed time for detector forward pass: {(toc1 - tic1) * 1e3:.1f}ms")
 
         # #Solve this to make it clearer always bbox_list = None if no detections
@@ -38,7 +38,7 @@ class SotPerceptor(BasePerceptor):
         if bbox_list is not None and self.tracker:
             bbox = self.tracker.forward(bbox_list,img)
             toc2 = time.perf_counter()
-            if self.verbose:
+            if self.verbose >=2 :
                 print(f"Elapsed time for tracker forward pass: {(toc2 - tic2) * 1e3:.1f}ms")
         #elif not self.tracker: 
             #No trackers provided just output the list of all detections
