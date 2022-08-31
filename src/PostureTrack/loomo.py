@@ -156,7 +156,7 @@ def Loomo(loomo_cfg, detector_cfg, tracker_cfg):
             #Video recording adding the bounding boxes
             if path_output_vid is not None:
                 output_vid.write(opencvImage)
-                
+            
             Utils.visualization(opencvImage, bbox, (255, 0, 0), 2)
 
             # TRANSMISSION
