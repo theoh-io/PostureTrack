@@ -189,6 +189,14 @@ class Utils():
         except (ImportError, AttributeError) as e:
             raise ImportError(class_str)
 
+    @staticmethod
+    def convert_strtoint(text):
+        if isinstance(text, str):
+            if text.isnumeric():
+                value=int(text)
+                return value
+        return text
+
     @staticmethod 
     def visualization(img, bbox_list: list, color=(0,0,255), thickness=2):
         if bbox_list is not None:

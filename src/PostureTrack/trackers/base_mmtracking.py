@@ -15,7 +15,10 @@ class BaseTracker():
 
         cpu = 'cpu' == desired_device
         cuda = not cpu and torch.cuda.is_available()
-        self.device = torch.device('cuda:0' if cuda else 'cpu')
+        if isinstance (desired_device,int):
+            desired_device='cuda:'+str(desired_device)
+            print(f"desired device {desired_device}")
+        self.device = torch.device(desired_device if cuda else 'cpu')
         self.tracker = init_model(path_config, path_model, self.device) 
         self.conf_thresh=tracking_conf
         self.frame=0

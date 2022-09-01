@@ -23,7 +23,8 @@ def get_config(cfg: DictConfig):
     downscale=cfg.loomo.downscale
     path_output_vid=cfg.loomo.path_video
     verbose=cfg.io.verbose_level
-    loomo_cfg={'ip':ip, 'downscale': downscale, 'path_output_vid': path_output_vid, 'verbose': verbose}
+    device=cfg.io.device
+    loomo_cfg={'ip':ip, 'downscale': downscale, 'path_output_vid': path_output_vid, 'device': device, 'verbose': verbose}
     if cfg.arch.arch_type=="topdown":
         detector_name=cfg.detector.detector_name
         detector_size=cfg.detector.detector_size
@@ -61,7 +62,10 @@ def Loomo(loomo_cfg, detector_cfg, tracker_cfg):
     ip=loomo_cfg["ip"]
     downscale=loomo_cfg["downscale"]
     path_output_vid=loomo_cfg["path_output_vid"]
+    device=loomo_cfg["device"]
+    device=Utils.convert_strtoint(device)
     verbose=loomo_cfg["verbose"]
+    verbose=Utils.convert_strtoint(verbose)
     detector_type=detector_cfg["type"]
     detector_size=detector_cfg["size"]
     detector_thresh=detector_cfg["thresh"]
@@ -96,7 +100,7 @@ def Loomo(loomo_cfg, detector_cfg, tracker_cfg):
                             detector = detector_object, detector_size=detector_size, detector_thresh=detector_thresh,
                             tracker=tracker_object, tracker_model=tracker_name, tracking_conf=tracking_conf,
                             path_cfg_tracker=path_cfg_tracker, path_weights_tracker=path_weights_tracker,
-                            type_input = "opencv", verbose=verbose)
+                            type_input = "opencv", verbose=verbose, device=device)
 
     ##################################
     # Connect to Loomo/Video Writer #

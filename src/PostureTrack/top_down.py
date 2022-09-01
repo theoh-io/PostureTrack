@@ -18,15 +18,17 @@ from trackers import mmtracking_sot, mmtracking_mot
 import hydra
 from omegaconf import DictConfig, OmegaConf
 
-global tracker_type, detector_model, tracking_conf, verbose, source, gt, path_output_vid, output_json
+global tracker_type, detector_model, tracking_conf, verbose, device, source, gt, path_output_vid, output_json
 
-def TopDown(detector_cfg, tracker_cfg, verbose,
+def TopDown(detector_cfg, tracker_cfg, verbose, device, 
                     source, gt, path_output_vid, path_output_json):
 
     ###################################
     # Load ConfigFile Arguments
     ####################################
     #hydra_topdown()
+    device=Utils.convert_strtoint(device)
+    verbose=Utils.convert_strtoint(verbose)
     detector_type=detector_cfg["type"]
     detector_size=detector_cfg["size"]
     detector_thresh=detector_cfg["thresh"]
@@ -61,7 +63,7 @@ def TopDown(detector_cfg, tracker_cfg, verbose,
                                 detector = detector_object, detector_size=detector_size, detector_thresh=detector_thresh, 
                                 tracker=tracker_object, tracker_model=tracker_name, tracking_conf=tracking_conf,
                                 path_cfg_tracker=path_cfg_tracker, path_weights_tracker=path_weights_tracker,
-                                type_input = "opencv", verbose=verbose)
+                                type_input = "opencv", verbose=verbose, device=device)
 
 
     # if tracker_type == "Yolov7":

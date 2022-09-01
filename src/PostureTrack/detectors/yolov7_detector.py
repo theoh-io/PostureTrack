@@ -26,7 +26,7 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized,
 
 
 class Yolov7Detector():
-    def __init__(self, model='default', thresh_bbox=0.1, verbose = 0):
+    def __init__(self, model='default', thresh_bbox=0.1, device='cpu', verbose = 0):
         if model=='small' or model=='s':
             yolo_version="yolov7-tiny"
         if model=='default' or model=='medium' or model=='m':
@@ -48,7 +48,11 @@ class Yolov7Detector():
         #self.device=1 #'cpu'
         # Initialize
         set_logging()
-        self.device = select_device()
+        if isinstance(device, int):
+            device='cuda:'+str(device)
+            self.device = torch.device(device)
+        else:
+            self.device = select_device()
         #print(f"device selected: {torch.device}, device is {self.device}")
         self.half = self.device.type != 'cpu'  # half precision only supported on CUDA
 

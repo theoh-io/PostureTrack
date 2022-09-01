@@ -9,19 +9,20 @@ class BasePerceptor():
                     detector=Yolov5Detector, detector_size="default", detector_thresh=0.1,
                     tracker=None, tracker_model=None, tracking_conf=0.5,
                     path_cfg_tracker="", path_weights_tracker="",
-                    type_input="opencv", verbose=1):
+                    type_input="opencv", verbose=1, device=0):
         # perceptor expected input image dimensions
         self.width = int(width/downscale)
         self.height = int(height/downscale)
         self.downscale = downscale
         self.verbose=verbose
+        self.device=device
 
         # Image received size data.
         self.data_size = int(self.width * self.height * channels)
 
-        self.detector=detector(model=detector_size, thresh_bbox=detector_thresh, verbose=self.verbose)
+        self.detector=detector(model=detector_size, thresh_bbox=detector_thresh, device=self.device, verbose=self.verbose)
         if tracker:
-            self.tracker=tracker(tracker_model, tracking_conf, path_cfg_tracker, path_weights_tracker, verbose=self.verbose)
+            self.tracker=tracker(tracker_model, tracking_conf, path_cfg_tracker, path_weights_tracker,device = self.device, verbose=self.verbose)
         else:
             self.tracker=None
         self.type_input=type_input
