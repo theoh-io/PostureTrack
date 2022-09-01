@@ -1,0 +1,5 @@
+tracker_name: Siamese
+tracker_type: SOT
+tracking_conf: 0.75
+path_cfg: "../../libs/mmtracking/configs/sot/siamese_rpn/siamese_rpn_r50_20e_lasot.py"
+path_weights: "trackers/weights/siamese_rpn_r50_20e_lasot_20220420_181845-dd0f151e.pth"

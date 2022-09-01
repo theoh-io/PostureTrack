@@ -2,7 +2,7 @@ defaults:
   - io: cfg_io
   - arch: top_down
   - detector: yolov5
-  - tracker: stark
+  - tracker: siamese
   - loomo: loomo_cfg
 
   # - arch: bottom_up
