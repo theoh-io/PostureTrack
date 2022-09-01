@@ -174,6 +174,7 @@ Please find the following documents for an introduction to the Loomo robot and a
 ---
 ## To add
 - ReadMe config folder
+- Yolov5 in libs so that we can load without torch hub and specify GPU in map location (currently yolov5 automatically loaded on cuda:0)
 - Keypoints for top down inference
 - 3D keypoints
 - Android App APK

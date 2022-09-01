@@ -1,8 +1,8 @@
 defaults:
   - io: cfg_io
   - arch: top_down
-  - detector: yolov7
-  - tracker: bytetrack
+  - detector: yolov5
+  - tracker: siamese
   - loomo: loomo_cfg
   # - arch: bottom_up
   # - tracker: pifpaf_tracker

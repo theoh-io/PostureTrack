@@ -7,7 +7,7 @@ from utilities import Utils
 
 
 class Yolov5Detector():
-    def __init__(self, model='default', thresh_bbox=0.1, verbose = 0):
+    def __init__(self, model='default', thresh_bbox=0.1, device='cpu', verbose = 0):
         if model=='small' or model=='s':
             yolo_version="yolov5s"
         if model=='default' or model=='medium' or model=='m':
@@ -15,9 +15,14 @@ class Yolov5Detector():
         if model=='large' or model=='l':
             yolo_version="yolov5l"
         if model=='xlarge' or model=='xl':
-            yolo_version="yolov5xl"
+            yolo_version="yolov5x"
         os.chdir("detectors/weights")
         self.model = torch.hub.load('ultralytics/yolov5', yolo_version)
+        #url='https://github.com/ultralytics/yolov5/releases/download/v6.2/'+yolo_version+'-cls.pt'
+        #checkpoint=torch.hub.load_state_dict_from_url(url, map_location=device)
+        #state_dict = {key.replace("module.", ""): value for key, value in checkpoint["state_dict"].items()}
+        # Apply the state dict to the model
+        #self.model.load_state_dict(state_dict)
         os.chdir("../..")
         print(f"-> Using {yolo_version} for multi bbox detection.")
         self.model.classes=0 #running only person detection
