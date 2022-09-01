@@ -136,9 +136,11 @@ def Loomo(loomo_cfg, detector_cfg, tracker_cfg):
         output_vid = cv2.VideoWriter(path_output_vid, cv2.VideoWriter_fourcc(*'MJPG'), fps, (width, height))
 
     #visualization parameters
-    zoom=2
-    cv2.namedWindow('Camera Loomo',cv2.WINDOW_NORMAL)
-    cv2.resizeWindow('Camera Loomo', 640*zoom ,480*zoom)
+    # zoom=2
+    # dim=(int(perceptor.width*zoom), int(perceptor.height*zoom))
+   
+    # cv2.namedWindow('Camera Loomo',cv2.WINDOW_NORMAL)
+    # cv2.resizeWindow('Camera Loomo', 640*zoom ,480*zoom)
 
     #Image Receiver 
     net_recvd_length = 0
@@ -167,6 +169,7 @@ def Loomo(loomo_cfg, detector_cfg, tracker_cfg):
                 output_vid.write(opencvImage)
             
             Utils.visualization(opencvImage, bbox, (255, 0, 0), 2)
+            #Utils.resized_visualization(opencvImage, dim, bbox, (255, 0, 0), 2)
 
             # TRANSMISSION
             # https://pymotw.com/3/socket/binary.html

@@ -5,4 +5,4 @@ gt:
 path_output_vid: "outputs/bottom_up_Bball.avi"
 path_output_json: "outputs/bottom_up_Bball.json"
 verbose_level: '3' #level 0: no prints, 1: minimal , 2: Runtimes, 3: Complete, 4: Debugging
-device: 1
+device: 0

@@ -211,6 +211,20 @@ class Utils():
         cv2.waitKey(1)
 
     @staticmethod 
+    def resized_visualization(img, dim, bbox_list: list, color=(0,0,255), thickness=2):
+        if bbox_list is not None:
+            if not isinstance(bbox_list[0], list):
+                #handle the case of only 1 detection
+                bbox_list=[bbox_list]
+            for bbox in bbox_list:  
+                start=(int(bbox[0]-bbox[2]/2), int(bbox[1]+bbox[3]/2)) #top-left corner
+                stop= (int(bbox[0]+bbox[2]/2), int(bbox[1]-bbox[3]/2)) #bottom right corner
+                cv2.rectangle(img, start, stop, color, thickness)
+        img=cv2.resize(img, dim)
+        cv2.imshow('Camera Loomo',img)
+        cv2.waitKey(1)
+
+    @staticmethod 
     def save_results(detector, bboxes_to_save):
         if detector.cfg.RECORDING.SAVE_RESULTS:
             bboxes_to_save = [b if b is not None else np.zeros(4) for b in bboxes_to_save]
