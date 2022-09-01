@@ -153,6 +153,14 @@ class Utils():
         return bbox
 
     @staticmethod
+    def average_bbox(bbox_list):
+        #for bbox in bbox_list:
+        bbox=np.mean(bbox_list, axis=0)
+        return bbox
+
+            
+
+    @staticmethod
     def crop_img_parts_from_bboxes(bbox_list: list, img: np.ndarray, image_processing: Callable):
         img_list=[]
         if bbox_list is not None and bbox_list[0] is not None:

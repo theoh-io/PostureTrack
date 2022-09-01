@@ -131,6 +131,11 @@ def Loomo(loomo_cfg, detector_cfg, tracker_cfg):
             print(f"width: {width}, height: {height}, fps: {fps}")
         output_vid = cv2.VideoWriter(path_output_vid, cv2.VideoWriter_fourcc(*'MJPG'), fps, (width, height))
 
+    #visualization parameters
+    zoom=2
+    cv2.namedWindow('Camera Loomo',cv2.WINDOW_NORMAL)
+    cv2.resizeWindow('Camera Loomo', 640*zoom ,480*zoom)
+
     #Image Receiver 
     net_recvd_length = 0
     recvd_image = b''
@@ -166,6 +171,10 @@ def Loomo(loomo_cfg, detector_cfg, tracker_cfg):
                 bbox_label=False
             else:
                 bbox_label=True
+            
+            if np.array(bbox).ndim >1:
+                bbox=Utils.average_bbox(bbox)
+
 
             values = (bbox[0], bbox[1], bbox[2], bbox[3], float(bbox_label))
             packer = struct.Struct('f f f f f')
