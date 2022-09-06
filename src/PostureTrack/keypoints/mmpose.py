@@ -30,7 +30,7 @@ class Keypoints3D():
         self.name_video_keypoints=save_video_keypoints
         if save_video_keypoints:
             self.fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-            self.fps = 2.5
+            self.fps = 3.5
             self.writer = None
         self.init_keypoints()
         self.init_3Dkeypoints()
@@ -205,7 +205,6 @@ class Keypoints3D():
             cv2.waitKey(1)
         if self.save_video_keypoints:
             if self.writer is None:
-                print(f"!!!!!!! path outputs: {path_outputs}, {self.name_video_keypoints}")
                 self.writer = cv2.VideoWriter(
                     os.path.join(path_outputs,self.name_video_keypoints), self.fourcc,
                     self.fps, (img_vis.shape[1], img_vis.shape[0]))

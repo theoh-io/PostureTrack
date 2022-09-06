@@ -1,2 +1,3 @@
 pose_model: mmpose
-keypoints3D: true
+pose3D_activated: True
+pose3D_model: mmpose

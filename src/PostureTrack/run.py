@@ -31,7 +31,9 @@ def get_config(cfg: DictConfig) -> None:
         if cfg.arch.pose_activated:
             pose_model=cfg.keypoints.pose_model
             path_output_3d=cfg.io.path_output_3Dkeypoint
-            pose_cfg={"name":pose_model, "3D": "true", "3Dname": "mmpose", "path_output_3D": path_output_3d}
+            activ_3D=cfg.keypoints.pose3D_activated
+            pose3D_model=cfg.keypoints.pose3D_model
+            pose_cfg={"name":pose_model, "3D": activ_3D, "3Dname": pose3D_model, "path_output_3D": path_output_3d}
         else:
             pose_cfg=None
         TopDown(detector_cfg, tracker_cfg, pose_cfg, verbose, device,
