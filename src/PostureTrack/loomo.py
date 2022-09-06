@@ -136,9 +136,9 @@ def Loomo(loomo_cfg, detector_cfg, tracker_cfg):
         output_vid = cv2.VideoWriter(path_output_vid, cv2.VideoWriter_fourcc(*'MJPG'), fps, (width, height))
 
     #visualization parameters
+    # /!\ increasing size of visualization highly impact inference speed
     # zoom=2
     # dim=(int(perceptor.width*zoom), int(perceptor.height*zoom))
-   
     # cv2.namedWindow('Camera Loomo',cv2.WINDOW_NORMAL)
     # cv2.resizeWindow('Camera Loomo', 640*zoom ,480*zoom)
 

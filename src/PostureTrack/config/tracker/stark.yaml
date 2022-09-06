@@ -1,5 +1,5 @@
 tracker_name: Stark
 tracker_type: SOT
-tracking_conf: 0.75
+tracking_conf: 0.97
 path_cfg: "../../libs/mmtracking/configs/sot/stark/stark_st2_r50_50e_lasot.py"
 path_weights: "trackers/weights/stark_st2_r50_50e_lasot_20220416_170201-b1484149.pth"
