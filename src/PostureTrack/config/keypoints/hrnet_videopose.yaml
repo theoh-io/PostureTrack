@@ -1,0 +1,8 @@
+pose_model: deeppose
+path_weights: "keypoints/weights/hrnet_w48_coco_256x192-b9e0b3ab_20200708.pth"
+path_config: "../../libs/mmpose/configs/body/2d_kpt_sview_rgb_img/topdown_heatmap/coco/hrnet_w48_coco_256x192.py"
+pose3D_activated: True
+pose3D_model: videopose
+path_weights3D: "keypoints/weights/videopose_h36m_243frames_fullconv_supervised_cpn_ft-88f5abbb_20210527.pth"
+path_config3D: "../../libs/mmpose/configs/body/3d_kpt_sview_rgb_vid/video_pose_lift/h36m/videopose3d_h36m_243frames_fullconv_supervised_cpn_ft.py"
+

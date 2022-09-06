@@ -1,0 +1,8 @@
+pose_model: deeppose
+path_weights: "keypoints/weights/hrnet_w48_coco_256x192-b9e0b3ab_20200708.pth"
+path_config: "../../libs/mmpose/configs/body/2d_kpt_sview_rgb_img/topdown_heatmap/coco/hrnet_w48_coco_256x192.py"
+pose3D_activated: False
+pose3D_model: 
+path_weights3D: 
+path_config3D: 
+

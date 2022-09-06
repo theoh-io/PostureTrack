@@ -30,10 +30,15 @@ def get_config(cfg: DictConfig) -> None:
                     "cfg":path_cfg, "weights":path_weights}
         if cfg.arch.pose_activated:
             pose_model=cfg.keypoints.pose_model
-            path_output_3d=cfg.io.path_output_3Dkeypoint
+            path_weights=cfg.keypoints.path_weights
+            path_config=cfg.keypoints.path_config
             activ_3D=cfg.keypoints.pose3D_activated
             pose3D_model=cfg.keypoints.pose3D_model
-            pose_cfg={"name":pose_model, "3D": activ_3D, "3Dname": pose3D_model, "path_output_3D": path_output_3d}
+            path_weights3D=cfg.keypoints.path_weights3D
+            path_config3D=cfg.keypoints.path_config3D
+            path_output_3d=cfg.io.path_output_3Dkeypoint
+            pose_cfg={"name":pose_model, "weights": path_weights, "config":path_config, "3D": activ_3D, "3Dname": pose3D_model,
+                    "weights3D":path_weights3D, "config3D":path_config3D, "path_output_3D": path_output_3d}
         else:
             pose_cfg=None
         TopDown(detector_cfg, tracker_cfg, pose_cfg, verbose, device,

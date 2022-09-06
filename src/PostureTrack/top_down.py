@@ -15,7 +15,7 @@ import cv2
 import numpy as np
 from perceptors import sot_perceptor, mot_perceptor
 from trackers import mmtracking_sot, mmtracking_mot
-from keypoints import mmpose, keypoints2D
+from keypoints import keypoints3D, keypoints2D
 import hydra
 from omegaconf import DictConfig, OmegaConf
 
@@ -38,8 +38,10 @@ def TopDown(detector_cfg, tracker_cfg, pose_cfg, verbose, device,
     # tracking_conf= tracker_cfg["conf"]
     # path_cfg_tracker= tracker_cfg["cfg"]
     # path_weights_tracker= tracker_cfg["weights"]
-    #if pose_cfg:
-    keypoints_name=pose_cfg["name"]
+    if pose_cfg:
+        keypoints_name=pose_cfg["name"]
+    else:
+        keypoints_name=None
     #     if pose_cfg["3D"]:
     #         keypoints3D_activ=True
     #         keypoints3D_name=pose_cfg["3Dname"]
@@ -80,9 +82,9 @@ def TopDown(detector_cfg, tracker_cfg, pose_cfg, verbose, device,
         perceptor_object=mot_perceptor.MotPerceptor
 
     #Pose Estimation object
-    if keypoints_name=="mmpose":
+    if keypoints_name:
         if pose_cfg["3D"]:
-            pose_est_object=mmpose.Keypoints3D
+            pose_est_object=keypoints3D.Keypoints3D
         else:
             pose_est_object=keypoints2D.Keypoints2D
 

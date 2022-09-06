@@ -36,8 +36,10 @@ class BasePerceptor():
         #Pose estimation
         
         if keypoints:
-            self.keypoints=keypoints(self.device, (self.width, self.height), 
-                    show3D=True, save_video_keypoints=keypoints_cfg["path_output_3D"], smooth=False)
+            self.keypoints=keypoints(keypoints_cfg["weights"], keypoints_cfg["config"],
+                    keypoints_cfg["3D"], keypoints_cfg["weights3D"], keypoints_cfg["config3D"],
+                    self.device, (self.width, self.height), show3D=True, 
+                    save_video_keypoints=keypoints_cfg["path_output_3D"], smooth=False)
             self.keypoints3D_activ=bool(keypoints_cfg["3D"])
             self.keypoints3D=keypoints_cfg["3Dname"]
         else:

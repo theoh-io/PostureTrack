@@ -20,7 +20,13 @@ from mmpose.datasets import DatasetInfo
 from mmpose.models import PoseLifter, TopDown
 
 class Keypoints2D():
-    def __init__(self, device, img_resolution, show3D=False, save_video_keypoints=False,smooth=False):
+    def __init__(self, path_weights, path_config, activated3D, path_weights3D, path_config3D, device, img_resolution, show3D=False, save_video_keypoints=False,smooth=False):
+        self.path_weights=path_weights
+        self.path_config=path_config
+        self.activated3D=activated3D
+        if self.activated3D:
+            self.path_weights3D=path_weights3D
+            self.path_config3D=path_config3D
         self.device=device
         self.resolution=img_resolution
         self.smooth= smooth
@@ -33,13 +39,17 @@ class Keypoints2D():
             self.fps = 3.5
             self.writer = None
         self.init_keypoints()
+        if self.activated3D:
+            self.init_3Dkeypoints()
         
     def init_keypoints(self):
         print("in init keypoints")
-        pose_detector_config=os.path.join(path_mmpose,"configs/body/2d_kpt_sview_rgb_img/deeppose/coco/res152_coco_384x288_rle.py")
+        pose_detector_checkpoint=self.path_weights
+        pose_detector_config=self.path_config
+        #pose_detector_config=os.path.join(path_mmpose,"configs/body/2d_kpt_sview_rgb_img/deeppose/coco/res152_coco_384x288_rle.py")
         #pose_detector_config=os.path.join(path_mmpose,"configs/body/2d_kpt_sview_rgb_img/topdown_heatmap/coco/hrnet_w48_coco_256x192.py")
         
-        pose_detector_checkpoint="https://download.openmmlab.com/mmpose/top_down/deeppose/deeppose_res152_coco_384x288_rle-b77c4c37_20220624.pth"
+        #pose_detector_checkpoint="https://download.openmmlab.com/mmpose/top_down/deeppose/deeppose_res152_coco_384x288_rle-b77c4c37_20220624.pth"
         #pose_detector_checkpoint="https://download.openmmlab.com/mmpose/top_down/hrnet/hrnet_w48_coco_256x192-b9e0b3ab_20200708.pth"
         self.pose_det_model = init_pose_model(
             pose_detector_config,
@@ -83,12 +93,14 @@ class Keypoints2D():
             use_oks=False,
             tracking_thr=0.3)
 
-        # # convert keypoint definition
-        # for res in self.pose_det_results:
-        #     keypoints = res['keypoints']
-        #     res['keypoints'] = Utils.convert_keypoint_definition(
-        #         keypoints, self.pose_det_dataset, self.pose_lift_dataset)
-        
+        if self.activated3D:
+        #only needed if 3D keypoints activated
+        # convert keypoint definition
+            for res in self.pose_det_results:
+                keypoints = res['keypoints']
+                res['keypoints'] = Utils.convert_keypoint_definition(
+                    keypoints, self.pose_det_dataset, self.pose_lift_dataset)
+            
         self.pose_det_results_list.append(copy.deepcopy(self.pose_det_results))
         
         img_vis=vis_pose_result(
@@ -103,6 +115,11 @@ class Keypoints2D():
             show=False,
             out_file=None)
         
+        
         return img_vis, self.pose_det_results
+    
         # cv2.imshow('Camera Loomo',img_vis)
         # cv2.waitKey(1)
+
+    def init_3Dkeypoints(self):
+            pass

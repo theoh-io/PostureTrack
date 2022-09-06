@@ -1,0 +1,7 @@
+pose_model: deeppose
+path_weights: "keypoints/weights/deeppose_res152_coco_384x288_rle-b77c4c37_20220624.pth"
+path_config: "../../libs/mmpose/configs/body/2d_kpt_sview_rgb_img/deeppose/coco/res152_coco_384x288_rle.py"
+pose3D_activated: False
+pose3D_model: 
+path_weights3D:
+path_config3D:

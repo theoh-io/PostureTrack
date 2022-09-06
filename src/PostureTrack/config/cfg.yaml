@@ -3,7 +3,7 @@ defaults:
   - arch: top_down_keypoints
   - detector: yolov7
   - tracker: stark
-  - keypoints: mmpose
+  - keypoints: hrnet_videopose
   - loomo: loomo_cfg
   # - arch: bottom_up
   

@@ -42,6 +42,8 @@ Furthermore Bottom-up keypoints tracking method using **OpenPifPaf Tracker** is 
 Check the other ReadMe file (add link) to get more info about the perception module and configurations
 
 ## Downloading pretrained models
+
+### Detection
 [Yolov5](https://github.com/ultralytics/yolov5):
     Automatic Download implemented
 
@@ -51,6 +53,8 @@ Check the other ReadMe file (add link) to get more info about the perception mod
     wget https://github.com/WongKinYiu/yolov7/releases/download/v0.1/yolov7.pt
     wget https://github.com/WongKinYiu/yolov7/releases/download/v0.1/yolov7x.pt
 
+### Tracking
+#### SOT
 [Stark](https://github.com/open-mmlab/mmtracking/tree/master/configs/sot/stark): Learning Spatio-Temporal Transformer for Visual Tracking
 
     cd src/PostureTrack/trackers/weights
@@ -59,9 +63,29 @@ Check the other ReadMe file (add link) to get more info about the perception mod
 [SiameseRPN++](https://github.com/open-mmlab/mmtracking/tree/master/configs/sot/siamese_rpn):  Evolution of Siamese Visual Tracking With Very Deep Networks
 
     wget https://download.openmmlab.com/mmtracking/sot/siamese_rpn/siamese_rpn_r50_1x_lasot/siamese_rpn_r50_20e_lasot_20220420_181845-dd0f151e.pth
-
+#### MOT
 [ByteTrack](https://github.com/open-mmlab/mmtracking/tree/master/configs/mot/bytetrack)
+
     wget https://download.openmmlab.com/mmtracking/mot/bytetrack/bytetrack_yolox_x/bytetrack_yolox_x_crowdhuman_mot17-private-half_20211218_205500-1985c9f0.pth
+
+### Pose 2D
+[DeepPose]()
+
+    cd src/PostureTrack/keypoints/weights
+    wget https://download.openmmlab.com/mmpose/top_down/deeppose/deeppose_res152_coco_384x288_rle-b77c4c37_20220624.pth
+
+[HrNet]()
+
+    wget https://download.openmmlab.com/mmpose/top_down/hrnet/hrnet_w48_coco_256x192-b9e0b3ab_20200708.pth
+
+
+### Pose 3D
+
+[VideoPose Human3.6M]()
+
+    cd src/PostureTrack/keypoints/weights
+    wget "https://download.openmmlab.com/mmpose/body3d/videopose/videopose_h36m_243frames_fullconv_supervised_cpn_ft-88f5abbb_20210527.pth"
+
 
 ---
 ## Running the Pipeline on Video/Img sequence
