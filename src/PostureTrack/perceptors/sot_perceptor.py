@@ -45,5 +45,10 @@ class SotPerceptor(BasePerceptor):
             #bbox=bbox_list
         else: 
             bbox=None
+        
+        #Pose estimation
+        if bbox and self.keypoints3D_activ:
+            res_keypoints=self.keypoints.inference_3Dkeypoints(img, bbox)
+            #handle result of keypoints
 
         return bbox

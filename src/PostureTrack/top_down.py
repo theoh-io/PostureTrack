@@ -15,12 +15,13 @@ import cv2
 import numpy as np
 from perceptors import sot_perceptor, mot_perceptor
 from trackers import mmtracking_sot, mmtracking_mot
+from keypoints import mmpose
 import hydra
 from omegaconf import DictConfig, OmegaConf
 
-global tracker_type, detector_model, tracking_conf, verbose, device, source, gt, path_output_vid, output_json
+#global tracker_type, detector_model, tracking_conf, verbose, device, source, gt, path_output_vid, output_json
 
-def TopDown(detector_cfg, tracker_cfg, verbose, device, 
+def TopDown(detector_cfg, tracker_cfg, pose_cfg, verbose, device, 
                     source, gt, path_output_vid, path_output_json):
 
     ###################################
@@ -37,6 +38,25 @@ def TopDown(detector_cfg, tracker_cfg, verbose, device,
     tracking_conf= tracker_cfg["conf"]
     path_cfg_tracker= tracker_cfg["cfg"]
     path_weights_tracker= tracker_cfg["weights"]
+    if pose_cfg:
+        keypoints_name=pose_cfg["name"]
+        if pose_cfg["3D"]:
+            keypoints3D_activ=True
+            keypoints3D_name=pose_cfg["3Dname"]
+            for key in pose_cfg:
+                print(f"the key name is {key} and its value is {pose_cfg[key]}")
+            path_output_3D=pose_cfg["path_output_3D"]
+        else:
+            keypoints3D_activ=False
+            keypoints3D_name=None
+            path_output_3D=None
+    else:
+        keypoints_name=None
+        keypoints3D_activ=False
+        keypoints3D_model=None
+        path_output_3D=None
+            
+
     ###################################
     # Initialize Full detector
     ###################################
@@ -59,10 +79,18 @@ def TopDown(detector_cfg, tracker_cfg, verbose, device,
         tracker_object=mmtracking_mot.MotTracker
         perceptor_object=mot_perceptor.MotPerceptor
 
+    #Pose Estimation object
+    if keypoints_name=="mmpose":
+        pose_est_object=mmpose.Keypoints3D
+    else:
+        pose_est_object=None
+
+
     perceptor=perceptor_object(width = 640, height = 480, channels = 3, downscale = 1,
                                 detector = detector_object, detector_size=detector_size, detector_thresh=detector_thresh, 
                                 tracker=tracker_object, tracker_model=tracker_name, tracking_conf=tracking_conf,
                                 path_cfg_tracker=path_cfg_tracker, path_weights_tracker=path_weights_tracker,
+                                keypoints=pose_est_object, keypoints3D_activ= keypoints3D_activ, keypoints3D_model= keypoints3D_name, path_output_3D=path_output_3D,
                                 type_input = "opencv", verbose=verbose, device=device)
 
 

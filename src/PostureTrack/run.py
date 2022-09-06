@@ -28,10 +28,16 @@ def get_config(cfg: DictConfig) -> None:
         path_weights= cfg.tracker.path_weights
         tracker_cfg={"name":tracker_name, "type":tracker_type ,"conf":tracking_conf,
                     "cfg":path_cfg, "weights":path_weights}
-        TopDown(detector_cfg, tracker_cfg, verbose, device,
+        if cfg.arch.pose_activated:
+            pose_model=cfg.keypoints.pose_model
+            path_output_3d=cfg.io.path_output_3Dkeypoint
+            pose_cfg={"name":pose_model, "3D": "true", "3Dname": "mmpose", "path_output_3D": path_output_3d}
+        else:
+            pose_cfg=None
+        TopDown(detector_cfg, tracker_cfg, pose_cfg, verbose, device,
                 source, gt, path_output_vid, path_output_json)
     elif cfg.arch.arch_type=="bottomup":
-        if cfg.arch.tracker=="pifpaf":
+        if cfg.arch.tracker=="pifpaf_tracker":
             checkpoint=cfg.tracker.checkpoint
             decoder=cfg.tracker.decoder
             long_edge=cfg.tracker.long_edge

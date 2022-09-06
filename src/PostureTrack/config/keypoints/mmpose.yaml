@@ -1,0 +1,2 @@
+pose_model: mmpose
+keypoints3D: true

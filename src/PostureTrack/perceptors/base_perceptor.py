@@ -9,6 +9,7 @@ class BasePerceptor():
                     detector=Yolov5Detector, detector_size="default", detector_thresh=0.1,
                     tracker=None, tracker_model=None, tracking_conf=0.5,
                     path_cfg_tracker="", path_weights_tracker="",
+                    keypoints=False, keypoints3D_activ=False, keypoints3D_model=None, path_output_3D=None,
                     type_input="opencv", verbose=1, device=0):
         # perceptor expected input image dimensions
         self.width = int(width/downscale)
@@ -26,6 +27,14 @@ class BasePerceptor():
         else:
             self.tracker=None
         self.type_input=type_input
+
+        #Pose estimation
+        self.keypoints_activ=bool(keypoints)
+        self.keypoints3D_activ=bool(keypoints3D_activ)
+        if self.keypoints_activ:
+            self.keypoints=keypoints(self.device, (self.width, self.height), 
+                    show3D=True, save_video_keypoints=path_output_3D, smooth=False)
+
 
         if self.verbose:
             print("Initializing Perceptor")
