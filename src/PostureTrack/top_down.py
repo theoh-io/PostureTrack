@@ -15,7 +15,7 @@ import cv2
 import numpy as np
 from perceptors import sot_perceptor, mot_perceptor
 from trackers import mmtracking_sot, mmtracking_mot
-from keypoints import mmpose
+from keypoints import mmpose, keypoints2D
 import hydra
 from omegaconf import DictConfig, OmegaConf
 
@@ -81,7 +81,11 @@ def TopDown(detector_cfg, tracker_cfg, pose_cfg, verbose, device,
 
     #Pose Estimation object
     if keypoints_name=="mmpose":
-        pose_est_object=mmpose.Keypoints3D
+        if pose_cfg["3D"]:
+            pose_est_object=mmpose.Keypoints3D
+        else:
+            pose_est_object=keypoints2D.Keypoints2D
+
     else:
         pose_est_object=None
 
@@ -165,8 +169,11 @@ def TopDown(detector_cfg, tracker_cfg, pose_cfg, verbose, device,
         elapsed_time_list.append((toc-tic)*1e3)
 
         # VISUALIZATION
-
-        Utils.visualization(img, bbox_list, (255, 0, 0), 2)
+        if hasattr(perceptor,"img_kpts"):
+            cv2.imshow("Camera Loomo", perceptor.img_kpts)
+            cv2.waitKey(1)
+        else:
+            Utils.visualization(img, bbox_list, (255, 0, 0), 2)
         if gt is not None:
             truth=df_gt[frame_number]
             truth=Utils.bbox_x1y1wh_to_xcentycentwh(truth)
