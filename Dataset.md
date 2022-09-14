@@ -1,0 +1,5 @@
+### Downloading Benchmark Data
+To download data to the Benchmark folder use the command:  `wget <link_data>`  in the Benchmark folder.
+- [**LaSOT**](http://vision.cs.stonybrook.edu/~lasot/): Large scale dataset for Single Image Tracking (SOT) as our detection algorithm is only trained on humans we are only interested on the person category available for download [here](https://drive.google.com/drive/folders/1v09JELSXM_v7u3dF7akuqqkVG8T1EK2_?usp=sharing) 
+- [**OTB100**](http://cvlab.hanyang.ac.kr/tracker_benchmark/datasets.html): Img sequences from various different sources with provided categories for tracking challenges (Illumination variations, Body deformation...). Only some sequences are relevant for out perception module (Human, Skater, BlurBody, Basketball...)
+- **Loomo Dataset** provides 8 + 16 Videos with provided ground truth from real-life experiments recordings. The Dataset is available for download at this [link](https://drive.google.com/drive/folders/1r9-GRIsfojvwlljnHovZ5SvlmbUzsZtZ?usp=sharing)
