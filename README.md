@@ -118,9 +118,6 @@ Easiest way to start is to change the ip-adress of loomo in the config file (`co
 `python3 src/PostureTrack/loomo.py`
 
 ---
-
-
----
 ## Other resources
 ### Introductory documents
 
