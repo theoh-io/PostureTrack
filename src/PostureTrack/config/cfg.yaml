@@ -1,9 +1,12 @@
 defaults:
   - io: cfg_io
-  - arch: top_down_keypoints
-  - detector: yolov7
+  - arch: top_down
+  - detector: yolov5
   - tracker: stark
   - keypoints: hrnet_videopose
   - loomo: loomo_cfg
+
+  # - io: cfg_io
   # - arch: bottom_up
+  # - tracker: pifpaf_tracker
   
