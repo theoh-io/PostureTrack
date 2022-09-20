@@ -1,11 +1,11 @@
 # **PostureTrack**
 
 
-Associated Paper: [](./others/paper.pdf)
+
 
 <p float="center">
-  <img src="./others/GIF1.gif" width="400" />
-  <img src="./others/GIF2.gif" width="400" /> 
+  <img src="./others/Tracking.gif" width="400" />
+  <img src="./others/LoomoDataset.gif" width="400" /> 
 </p>
 
 
@@ -25,7 +25,7 @@ This repository shows the implementation of a highly modular Video Perception To
 
 * Modularity
 
-    We decompose the video perception framework into different components and one can easily construct a customized multi-stage method by combining different modules.
+    We decompose the video perception framework into different components and one can easily construct a customized multi-stage method by combining different modules. See the [documentation](./src/PostureTrack/config/README.md) for assembling config files.
     
 * Benchmarking
 
@@ -114,7 +114,7 @@ Run the AlgoApp on Loomo and press on button **Start Algo** to allow for socket 
 Before trying to launch the app on loomo make sure to have the same downscale parameter on Loomo and in the config file: `config/loomo/loomo_cfg.yaml`. To see the config on loomo use the command: `adb shell cat /sdcard/follow.cfg`
 
 ### QuickStart with Loomo
-Easiest way to start is to change the ip-adress of loomo in the config file (`config/loomo/loomo_cfg.yaml`)  and launch the script to run the algorithm on loomo
+Easiest way to start is to change the ip-adress of loomo in the [config file](./src/PostureTrack/config/loomo/loomo_cfg.yaml)  and launch the script to run the algorithm on loomo
 `python3 src/PostureTrack/loomo.py`
 
 ---
