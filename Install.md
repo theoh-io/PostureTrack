@@ -45,14 +45,17 @@ yolov7: https://github.com/WongKinYiu/yolov7
     cd yolov7
     pip install -r requirements
 
+### Installing **PostureTrack** package
 
-In the `Perception-Pipeline/python/` directory run the following command to install our custom perceptionloomo package ` pip install -e .`
+In the root directory run the following command to install our custom package ` pip install -e .`
 
 (Optional) In case you work with specific GPU and CUDA version
 -   More info on specific torch and torchvision versions:
 
     https://pypi.org/project/torchvision/ (compatibility list)
+
     https://download.pytorch.org/whl/torch_stable.html (torch)
+    
     http://download.pytorch.org/whl/torchvision/ (torchvision)
 
 ## Downloading pretrained models
