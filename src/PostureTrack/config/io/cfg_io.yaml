@@ -1,6 +1,6 @@
 
 file: "BlurBody"
-source: "../../${io.file}/video.avi"
+source: "../../datasets/${io.file}"
 gt: 
 path_output_vid: "outputs/bottom_up_${io.file}.avi"
 path_output_json: "outputs/bottom_up_${io.file}.json"

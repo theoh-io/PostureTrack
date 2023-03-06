@@ -136,7 +136,7 @@ def TopDown(detector_cfg, tracker_cfg, pose_cfg, verbose, device,
     #df_gt=Utils.load_groundtruth(path_groundtruth)
     if verbose:
         print(f"Using: {source} as input")
-    grab = FrameGrab(mode="video", path=source)
+    grab = FrameGrab(mode="img", path=source)
 
     if path_output_vid:
         # get vcap property 
