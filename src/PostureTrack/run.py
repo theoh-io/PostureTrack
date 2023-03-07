@@ -1,5 +1,6 @@
 from omegaconf import DictConfig, OmegaConf
 import hydra
+import torch
 from top_down import TopDown
 from pifpaf import PifPaf
 
@@ -14,7 +15,13 @@ def get_config(cfg: DictConfig) -> None:
     path_output_vid=cfg.io.path_output_vid
     path_output_json=cfg.io.path_output_json
     verbose=cfg.io.verbose_level
-    device=cfg.io.device
+    if torch.cuda.is_available():
+        device = torch.device("cuda:0")
+        print("Using GPU")
+    else:
+        device = torch.device("cpu")
+        print("Using CPU")
+    #device=cfg.io.device
     if cfg.arch.arch_type=="topdown":
         detector_name=cfg.detector.detector_name
         detector_size=cfg.detector.detector_size
@@ -52,6 +59,8 @@ def get_config(cfg: DictConfig) -> None:
             disable_cuda=cfg.tracker.disable_cuda
             PifPaf(checkpoint, decoder, long_edge, show_result, disable_cuda,
                     source, path_output_vid, path_output_json)
+        else:
+            print("Tracker not implemented")
 
 
 if __name__ == "__main__":

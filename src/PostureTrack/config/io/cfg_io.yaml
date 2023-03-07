@@ -1,9 +1,9 @@
 
 file: "BlurBody"
-source: "../../datasets/${io.file}"
+source: "../../datasets/${io.file}/video.avi"
 gt: 
-path_output_vid: "outputs/bottom_up_${io.file}.avi"
-path_output_json: "outputs/bottom_up_${io.file}.json"
+path_output_vid: "../../outputs/bottom_up_${io.file}.avi"
+path_output_json: "../../outputs/bottom_up_${io.file}.json"
 path_output_3Dkeypoint: "3Dkeypoints_${io.file}.mp4"
-verbose_level: '3' #level 0: no prints, 1: minimal , 2: Runtimes, 3: Complete, 4: Debugging
+verbose_level: '2' #level 0: no prints, 1: minimal , 2: Runtimes, 3: Complete, 4: Debugging
 device: 0
