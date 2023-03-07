@@ -21,6 +21,8 @@ from omegaconf import DictConfig, OmegaConf
 
 #global tracker_type, detector_model, tracking_conf, verbose, device, source, gt, path_output_vid, output_json
 
+
+
 def TopDown(detector_cfg, tracker_cfg, pose_cfg, verbose, device, 
                     source, gt, path_output_vid, path_output_json):
 
@@ -136,7 +138,7 @@ def TopDown(detector_cfg, tracker_cfg, pose_cfg, verbose, device,
     #df_gt=Utils.load_groundtruth(path_groundtruth)
     if verbose:
         print(f"Using: {source} as input")
-    grab = FrameGrab(mode="img", path=source)
+    grab = FrameGrab(mode="video", path=source)
 
     if path_output_vid:
         # get vcap property 
@@ -155,20 +157,15 @@ def TopDown(detector_cfg, tracker_cfg, pose_cfg, verbose, device,
     elapsed_time_list=[]
     frame_number=0
 
-    while(True):
+    while(frame_number<100): #True):
         img = grab.read_cap()
         if img is None:
             print("Stop reading.")
             break
-        tic = time.perf_counter()
         # INFERENCE
         bbox_list = perceptor.forward(img)
-        toc = time.perf_counter()
-        if verbose >= 2:
-            print(f"Elapsed time for whole fordward pass: {(toc-tic)*1e3:.1f}ms")
-        #record bbox and elapsed time
+        #record bbox
         bboxes_to_save.append(bbox_list)
-        elapsed_time_list.append((toc-tic)*1e3)
 
         # VISUALIZATION
         if hasattr(perceptor,"img_kpts"):
@@ -193,9 +190,11 @@ def TopDown(detector_cfg, tracker_cfg, pose_cfg, verbose, device,
             break
         frame_number+=1
 
-    average_forward_time=np.mean(elapsed_time_list)
+    #average_forward_time=np.mean(elapsed_time_list)
     if verbose:
-        print(f"Average time for a forward pass is {average_forward_time:.1f}ms")
+        #print(f"Average time for a forward pass is {average_forward_time:.1f}ms")
+        perceptor.average_inference_times()
+
     #Utils.save_results(detector, bboxes_to_save)
 
     cv2.destroyAllWindows()

@@ -23,6 +23,8 @@ class BasePerceptor():
         self.verbose=verbose
         self.device=device
 
+        self.inference_times = {}
+
         # Image received size data.
         self.data_size = int(self.width * self.height * channels)
 
@@ -33,8 +35,10 @@ class BasePerceptor():
             self.tracker=None
         self.type_input=type_input
 
-        #Pose estimation
         
+        
+
+        #Pose estimation
         if keypoints:
             self.keypoints=keypoints(keypoints_cfg["weights"], keypoints_cfg["config"],
                     keypoints_cfg["3D"], keypoints_cfg["weights3D"], keypoints_cfg["config3D"],
@@ -56,4 +60,17 @@ class BasePerceptor():
     def forward(self, image):
         raise NotImplementedError("perceptor Base Class does not provide a forward method.")
 
+
+    def add_inference_time(self, module_name, time):
+        if module_name in self.inference_times:
+            self.inference_times[module_name].append(time)
+        else:
+            self.inference_times[module_name] = [time]
+
+    def average_inference_times(self):
+        print("Average inference times ")
+        for module_name in self.inference_times:
+            times = self.inference_times[module_name]
+            avg_time = sum(times) / len(times)
+            print(f"{module_name}: {avg_time:.1f} ms")
 
