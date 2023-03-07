@@ -78,7 +78,7 @@ This repository shows the implementation of a highly modular Video Perception To
         <ul>
         <li><a href="https://openaccess.thecvf.com/content_cvpr_2014/html/Toshev_DeepPose_Human_Pose_2014_CVPR_paper.html">DeepPose</a></li>
         <li><a href="https://openaccess.thecvf.com/content_CVPR_2019/html/Sun_Deep_High-Resolution_Representation_Learning_for_Human_Pose_Estimation_CVPR_2019_paper.html">Hrnet</a> + <a href="https://arxiv.org/abs/1611.05424">Associative Embeddings</a></li>
-        <li><a href="ttps://arxiv.org/abs/2103.02440">OpenPifPaf</a></li>
+        <li><a href="https://arxiv.org/abs/2103.02440">OpenPifPaf</a></li>
         </ul>
       </td>
       <td>
