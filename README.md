@@ -34,14 +34,59 @@ This repository shows the implementation of a highly modular Video Perception To
 ## Methods Implemented
 ---
 
+<div align="center">
+  <b>Architectures</b>
+</div>
+<table align="center">
+  <tbody>
+    <tr align="center" valign="bottom">
+      <td>
+        <b>Object Detection</b>
+      </td>
+      <td>
+        <b>Single Object Tracking (SOT)</b>
+      </td>
+      <td>
+        <b>Multiple Object Tracking (MOT)</b>
+      </td>
+      <td>
+        <b>Pose Estimation</b>
+      </td>
+      <td>
+        <b>3D Pose Estimation</b>
+      </td>
+    </tr>
+    <tr align="center" valign="top">
+      <td>
+        <li><a href="https://github.com/ultralytics/yolov5">Yolov5</a></li>
+        <li><a href="https://github.com/WongKinYiu/yolov7">Yolov7</a></li>
+      </td>
+      <td>
+        <li><a href="https://github.com/researchmm/Stark">Stark</a></li>
+        <li><a href="https://arxiv.org/abs/1812.11703">SiamRPN++</a></li>
+      </td>
+      <td>
+        <li><a href="https://arxiv.org/abs/2110.06864">ByteTrack</a></li>
+      </td>
+      <td>
+        <li><a href="https://openaccess.thecvf.com/content_cvpr_2014/html/Toshev_DeepPose_Human_Pose_2014_CVPR_paper.html">DeepPose</a></li>
+        <li><a href="https://openaccess.thecvf.com/content_CVPR_2019/html/Sun_Deep_High-Resolution_Representation_Learning_for_Human_Pose_Estimation_CVPR_2019_paper.html">Hrnet</a> + <a href="https://arxiv.org/abs/1611.05424">Associative Embeddings</a></li>
+        <li><a href="ttps://arxiv.org/abs/2103.02440">OpenPifPaf</a></li>
+      </td>
+      <td>
+        <li><a href="https://mmpose.readthedocs.io/en/latest/papers/algorithms.html#videopose3d-cvpr-2019">VideoPose3D</a></li>
+      </td>
+  </tbody>
+</table>
+
 ### Detection
 
 - [x] [Yolov5](https://github.com/ultralytics/yolov5)
 - [x] [Yolov7](https://github.com/WongKinYiu/yolov7)
 ### Single Object Tracking
 
-- [x] [Stark](https://github.com/open-mmlab/mmtracking/tree/master/configs/sot/stark)
-- [x] [SiameseRPN++](https://github.com/open-mmlab/mmtracking/tree/master/configs/sot/siamese_rpn)
+- [x] [Stark](https://github.com/researchmm/Stark)
+- [x] [SiameseRPN++](https://arxiv.org/abs/1812.11703)
 
 ### Multiple Object Tracking
 
